@@ -1,0 +1,53 @@
+\documentclass[mathshortcuts, noboxsols]{homework}
+
+\class{MATH 420 -- Linear Algebra}
+\assignmentNo{Homework 1}
+\dueDate{February 14, 2025}
+
+\studentName{Brendan May}
+\instructorName{Professor Birch}
+\sectionNo{01}
+
+\begin{document}
+
+		\maketitle
+		We have typeset this homework with the \texttt{mathshortcuts} option (to load in the default macros) and with the \texttt{noboxsols} option to not box the solution environments. If you have a predefined set of macros, you can use them by removing the \texttt{mathshortcuts} option.
+
+		\begin{problem}
+				Multiply the matrices $A$ and $B$ below:
+				\begin{equation*}
+						A = \begin{bmatrix}
+								1 & 0 \\ 0 & 0
+						\end{bmatrix}, B = \begin{bmatrix}
+								3 & 2 \\ 0 & -1
+						\end{bmatrix}
+				\end{equation*}
+		\end{problem}
+		\begin{soln}
+				 We have that 
+				 \begin{equation}
+				 		AB = \begin{bmatrix}
+								1 & 0 \\ 0 & 0
+						\end{bmatrix}\begin{bmatrix}
+								3 & 2 \\ 0 & -1
+						\end{bmatrix} = \begin{bmatrix}
+								1(3) + 0(0) & 1(2) + 0(-1)  \\ 
+								0(3) + 0(0) & 0(2) + 0(-1)
+						\end{bmatrix} = \begin{bmatrix}
+								3 & 2 \\ 0 & 0
+						\end{bmatrix}
+				 \end{equation}
+		\end{soln}
+
+		\begin{problem}
+				Suppose $V$ is a vector space. Define what it means for a set $U \subseteq V$ to be a subspace of $V$.
+		\end{problem}
+		\begin{soln}
+				A set $U \subseteq V$ is a subspace of $V$ if
+				\begin{enumerate}
+						\item $0\in U$. 
+						\item For all $x,y\in U$, we have $x+y\in U$. 
+						\item For all $x\in U$ and $c\in \R$, we have $cx \in U$.
+				\end{enumerate}
+		\end{soln}
+\end{document}
