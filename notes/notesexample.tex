@@ -1,0 +1,109 @@
+\documentclass[colorful]{notes}
+
+\title{Eigenvalues \& Diagonalization}
+\author{Nilay Tripathi }
+\date{June 2025}
+
+\begin{document}
+
+    \maketitle
+    
+    In these notes, we look at a certain class of vectors associated to a matrix: \textbf{eigenvectors} and their associated \textbf{eigenvalues}. In addition to several applications in other disciplines, they will reveal important information regarding the structure of these matrices and their associated linear operators. 
+
+    \section{Eigen-things}
+    Throughout these notes, we will study square matrices. 
+    \begin{cdefn}{Eigenvalues \& Eigenvectors}{eigenvalsvects}
+        Let $A$ be an $n \times n$ matrix of real numbers. A real number $\lambda \in \R$ is an \textbf{eigenvalue} of $A$ if there exists a nonzero vector $\vectv\in \R^n$ such that $A \vectv = \lambda \vectv$. The vector $\vectv$ is then an \textbf{eigenvector} of $A$ corresponding to the eigenvalue $\lambda$.
+    \end{cdefn}
+
+    \begin{example}
+        Consider the matrix $A$ given below. Observe that this matrix is the standard matrix for a reflection about the $y$-axis. 
+        \begin{equation*}
+            A = \begin{bmatrix}
+                -1 & 0 \\ 
+                0 & 1
+            \end{bmatrix}
+        \end{equation*}
+        Using geometry, we see that the $y$-axis is fixed by the transformation. We verify this by computing 
+        \begin{equation*}
+            A\vecte_2 = \begin{bmatrix}
+                -1 & 0 \\ 
+                0 & 1
+            \end{bmatrix} \colvect{0 \\ 1} = \colvect{0 \\ 1} = \vecte_2 
+        \end{equation*}
+        So $\vecte_2$ is an eigenvector of $A$ with corresponding eigenvalue 1. 
+
+        In the reflection, the $x$-axis isn't fixed but it is negated. Thus, we may compute 
+        \begin{equation*}
+            A\vecte_1 = \begin{bmatrix}
+                -1 & 0 \\ 
+                0 & 1
+            \end{bmatrix} \colvect{1 \\ 0} = \colvect{-1 \\ 0} = -\vecte_1
+        \end{equation*}
+        So $\vecte_1$ is also an eigenvector of $A$ with corresponding eigenvalue $-1$.
+    \end{example}
+
+    \begin{example}
+        Not all matrices have eigenvalues. For an angle $\theta \in [0, 2\pi)$, the rotation matrix $R_\theta$ is defined as 
+        \begin{equation*}
+            R_\theta = \begin{bmatrix}
+                \cos \theta & -\sin \theta \\ \sin \theta & \cos \theta
+            \end{bmatrix}
+        \end{equation*}
+        Multiplying a vector $\vectv \in \R^2$ by $R_\theta$ rotates $\vectv$ counterclockwise by an angle $\theta$. We thus notice that for a nonzero vector $\vectv$, $R_\theta \vectv$ can never be a scalar multiple of $\vectv$ since rotation will change the direction of the vector. Thus, $R_\theta$ does not have eigenvectors and eigenvalues. 
+
+        As we will see later, if we permit eigenvalues to be \emph{complex numbers} as well as real numbers, then every matrix \emph{will} have complex eigenvalues.
+    \end{example}
+
+    \subsection{Finding the Eigenvalues \& Eigenvectors}
+    We now turn to the question of actually determining the eigenvalues and eigenvectors of a matrix $A \in \R^{n\times n}$. Fortunately, this isn't a difficult task. For $\lambda \in \R$ to be an eigenvalue of $A$, it must satisfy the equation 
+    \begin{equation*}
+        A \vectv = \lambda \vectv 
+    \end{equation*}
+    for a nonzero vector $\vectv\in \R^n$. The equation above is equivalent to 
+    \begin{align*}
+        A \vectv = \lambda \vectv &\iff A\vectv - \lambda \vectv = \zerovec \\ 
+        & \iff A \vectv - \lambda I_n \vectv = \zerovec \\ 
+        & \iff (A - \lambda I_n)\vectv = \zerovec
+    \end{align*}
+    In particular, since eigenvectors are taken to be nonzero, for $\lambda$ to be an eigenvalue of $A$, the last equation above must have nontrivial solutions. Said differently, this means that $\Null (A - \lambda I_n)$ must be nontrivial. From the invertible matrix theorem, the matrix $A - \lambda I_n$ cannot be invertible which is equivalent to $\det (A - \lambda I_n) = 0$. This gives us the general method for computing eigenvalues. In fact, this polynomial is so important, it is given a special name. 
+    \begin{cdefn}{Characteristic Polynomial}{charpoly}
+        For an $n \times n$ matrix $A$, its \textbf{characteristic polynomial} is the polynomial in $t$ given by $\det (A - tI_n)$. The \textbf{characteristic equation} is the polynomial equation $\det(A - tI_n) = 0$. 
+    \end{cdefn}
+    We then see that the eigenvalues will be the roots of the characteristic polynomial. Once an eigenvalue $\lambda$ has been identified, we can then work on finding the eigenvectors. The eigenvectors are the nonzero vectors $\vectv\in \R^n$ satisfying $(A - \lambda I_n)\vectv = \zerovec$. The set of all eigenvectors of $\lambda$ is the \textbf{eigenspace} corresponding to $\lambda$. Since it is the nullspace of a matrix, we see that the eigenspace is a subspace of $\R^n$. 
+
+    Summarizing the discussion above, we now know how to determine the eigenvalues of a matrix and the corresponding basis of eigenvectors. 
+    \begin{cfact}{Finding Eigenvalues \& Eigenvectors}{}
+        Suppose $A$ is an $n\times n$ matrix. To find the eigenvalues of $A$ and the corresponding basis of eigenvectors for each eigenvalue: 
+        \begin{enumerate}
+            \item Solve the \textbf{characteristic equation} $\det(A - tI_n) = 0$. The solutions in $t$ are the eigenvalues of $A$. 
+            \item For each eigenvalue of $t$, the basis for the eigenspace is just a basis for $\Null(A - tI_n)$.
+        \end{enumerate}
+    \end{cfact}
+
+    \begin{example}
+        Let us return to the matrix $A = \begin{bmatrix} -1 & 0 \\ 0 & 1 \end{bmatrix}$ from the first example. We already know what the eigenvalues and eigenvectors are by inspection; let us confirm it with our newly found procedure. We first compute the characteristic polynomial as 
+        \begin{equation*}
+            \det \begin{bmatrix}
+                -1 -t & 0 \\ 0 & 1 - t
+            \end{bmatrix} = -(1 + t)(1 - t)
+        \end{equation*}
+        The eigenvalues are thus found by solving the equation $-(1+t)(1-t) = 0$ which has solutions $t = \pm 1$. These are the eigenvalues of $A$ (as we've seen). 
+
+        Let us find a basis for the eigenspace corresponding to the eigenvalue $t = 1$. We see that 
+        \begin{equation*}
+            A - 1 \cdot I_n = A - I_n = \begin{bmatrix}
+                -2 & 0 \\ 0 & 0 
+            \end{bmatrix}
+        \end{equation*}
+        How convenient, this matrix happens to be in row echelon form already! We see that the general form of the solution is $\vectv = \rowvect{0 & x_2}^T = x_2 \rowvect{0 & 1}^T$. Thus, a basis for this nullspace is the set $\left\{ \rowvect{0 & 1}^T \right\}$, which is thus a basis for the eigenspace for eigenvalue 1. Note that this confirms our previous belief that $\vecte_2$ was an eigenvector corresponding to eigenvalue 1. 
+
+        For the other eigenvalue $t = -1$, we see 
+        \begin{equation*}
+            A - (-1)I_n = A + I_n = \begin{bmatrix}
+                0 & 0 \\ 0 & 2
+            \end{bmatrix}
+        \end{equation*}
+        Similar logic as the previous eigenvalue shows us that a basis for the null space here is $\left\{ \rowvect{1 & 0} \right\}^T$. We therefore see that $\vecte_1$ is an eigenvector corresponding to eigenvalue $-1$, again confirming our geometric reasoning from earlier.
+    \end{example}
+\end{document}

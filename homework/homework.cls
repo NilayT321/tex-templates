@@ -101,13 +101,14 @@
 		% This part of the class defines several mathematical shortcuts 
 		% =================================================================================== 
 		% Blackboard fonts
-		\newcommand{\Z}{\ensuremath{\mathbb{Z}}}
-		\newcommand{\Q}{\ensuremath{\mathbb{Q}}}
-		\newcommand{\N}{\ensuremath{\mathbb{N}}}
-		\newcommand{\R}{\ensuremath{\mathbb{R}}}
-		\newcommand{\C}{\ensuremath{\mathbb{C}}}
-		\newcommand{\F}{\ensuremath{\mathbb{F}}}
-		\newcommand{\bbP}{\ensuremath{\mathbb{P}}}
+		\newcommand{\N}{\mathbb{N}}                 % Natural numbers
+		\newcommand{\Z}{\mathbb{Z}}                 % Integers
+		\newcommand{\Q}{\mathbb{Q}}                 % Rational numbers 
+		\newcommand{\R}{\mathbb{R}}                 % Real numbers
+		\newcommand{\C}{\mathbb{C}}                 % Complex numbers
+		\newcommand{\F}{\mathbb{F}}                 % Finite fields 
+		\newcommand{\bP}{\mathbb{P}}								% Probability 
+		\newcommand{\E}{\mathbb{E}}									% Expectation
 
 		% Script fonts
 		\newcommand{\calT}{\mathcal{T}}
