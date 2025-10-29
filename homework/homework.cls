@@ -62,6 +62,7 @@
 % Section number 
 \newcommand{\sectionNo}[1]{\renewcommand\@sectionNo{#1}}
 \newcommand{\@sectionNo}{}
+
 % Generate assignment info box 
 \newcommand{\infoBox}{
     \begin{center}
@@ -152,12 +153,12 @@
 		\numberwithin{equation}{problemctr}
 		\renewcommand{\theequation}{\theproblemctr.\arabic{equation}}
 
-		\NewDocumentEnvironment{cproblem}{O{}}{%
+		\NewDocumentEnvironment{cproblem}{O{cyan!10}}{%
 				\stepcounter{problemctr}
 				\begin{tcolorbox}[
 						blanker, 
 						interior engine = spartan, 
-						colback = cyan!10,
+						colback = #1,
 						left = 3mm, top = 2mm, right = 3mm, bottom = 2mm, 
 						borderline west = {0.8mm}{0pt}{black},
 						after skip = 5mm,

@@ -1,0 +1,50 @@
+\documentclass[mathshortcuts, colorful]{homework}
+
+\class{MATH 670 -- Measure Theory}
+\assignmentNo{Homework 1}
+\dueDate{October 28, 2025}
+
+\studentName{Ash Ketchup}
+\instructorName{Professor Oak}
+\sectionNo{01}
+
+\begin{document}
+		\maketitle 
+
+		\noindent The \verb|\maketitle| command has been redefined to produce the assignment header above. By default, this header includes the class name, assignment number, due date, as well as details about the class. \bigbreak 
+
+		\noindent We have loaded the \texttt{mathshortcuts} option to load in a set of sensible math shortcuts. Refer to the source in \texttt{homework.cls} for the full set. If you have your own set of macros, just load the class without this option to use them. \bigbreak
+
+		\noindent This assignment has been the loaded with the \texttt{colorful} option to add some color to your boring mathematical life. This generates a simplistic yet stylish colored box to contain the problem. The colored box is typed using the \texttt{cproblem} environment; this way, you can still use the plain and boring problem environment if you find a need to. Note that the counters for each type of box are separate at this time.
+		
+		\begin{cproblem}
+				State the definition of a $\sigma$-algebra on a set $X$ and of a measure on $X$.
+		\end{cproblem}
+		\begin{soln}
+				A $\sigma$-algebra on $X$ is a collection of subsets $\calS \subseteq 2^X$ such that 
+				\begin{enumerate}
+						\item $\emptyset \in \calS$. 
+						\item $\calS$ is closed under countable unions. 
+						\item $\calS$ is closed under complements.
+				\end{enumerate}
+				If $X$ is a set and $\calS$ is a $\sigma$-algebra on $X$, then a \textbf{measure} on $X$ is a set function $\mu : \calS \to [0, +\infty]$ satisfying: 
+				\begin{enumerate}
+						\item $\mu(\emptyset) = 0$ 
+						\item $\mu \left( \bigcup_{k=1}^{\infty} E_k \right) = \sum_{k=1}^{\infty} \mu(E_k)$ if the collection $\{E_k\}$ consists of disjoint sets.
+				\end{enumerate}
+		\end{soln}
+
+		The default color is \texttt{cyan!10} (note that the \texttt{xcolor} package is being used). You can change the color by passing in an optional argument to the \texttt{cproblem} environment like this: 
+		\begin{verbatim}
+						\begin{cproblem}[red!30] 
+								Your problem here...
+						\end{cproblem}
+		\end{verbatim}
+
+		\begin{cproblem}[red!30] 
+				Give an example of a non-Lebesgue measurable subset of $\R$ (this problem is red since it is harder than the last problem).
+		\end{cproblem}
+		\begin{soln}
+				We can construct a Vitali set.....
+		\end{soln}
+\end{document}
