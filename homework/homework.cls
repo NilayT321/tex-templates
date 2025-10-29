@@ -1,5 +1,6 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{homework}
+\LoadClass{article}
 
 \RequirePackage{xcolor}
 \RequirePackage{amsmath}
@@ -9,7 +10,26 @@
 \RequirePackage{thmtools}
 \RequirePackage{mathtools}
 \RequirePackage{tcolorbox}
+\RequirePackage{tikz}
+\RequirePackage{pgfplots} 
+\RequirePackage{esint}
+\RequirePackage{breqn}
+\RequirePackage{bbm}
+\RequirePackage{geometry}
+\RequirePackage[hidelinks]{hyperref} 
+\RequirePackage[capitalize, noabbrev]{cleveref}
+\RequirePackage{import}
+\RequirePackage{pdfpages}
+\RequirePackage{transparent}
+\RequirePackage{xcolor}
+\RequirePackage[shortlabels]{enumitem}
+\RequirePackage{xparse}
 
+\pgfplotsset{compat = 1.18}
+\usetikzlibrary{cd}
+\usetikzlibrary{calc}
+\usetikzlibrary{decorations.pathmorphing}
+\usetikzlibrary{spath3}
 
 \tcbuselibrary{skins, breakable}
 
@@ -42,7 +62,6 @@
 % Section number 
 \newcommand{\sectionNo}[1]{\renewcommand\@sectionNo{#1}}
 \newcommand{\@sectionNo}{}
-
 % Generate assignment info box 
 \newcommand{\infoBox}{
     \begin{center}
@@ -57,6 +76,10 @@
 % The problem is notated using amsthm 
 \theoremstyle{definition}
 \newtheorem{problem}{Problem}
+\newtheorem{lem}{Lemma}[problem]
+
+% Change equation numbering to number equations by problem
+\numberwithin{equation}{problem}
 
 % Solution end character
 % What character is used to end the solutions?
@@ -78,7 +101,74 @@
     \bigbreak \noindent
 }
 
+\setlist{itemsep = 0.1em}
+
+% Update the \maketitle command to use the data we provide 
+\renewcommand{\maketitle}{
+		\assignHeader
+		\infoBox
+}
+
+% include svg figures from inkscape-figures
+\newcommand{\incfig}[2][1]{%
+    \def\svgwidth{#1\columnwidth}
+    \import{./figures/}{#2.pdf_tex}
+}
+
+\pdfsuppresswarningpagegroup=1
+
+% SOME CODE FROM THE QUIVER PACKAGE 
+% I use the quiver web app to draw commutative diagrams 
+% This is some code from the quiver.sty package to get it to work 
+% For some reason, I cannot install this package via CTAN
+
+% A TikZ style for curved arrows of a fixed height, due to AndréC.
+\tikzset{curve/.style={settings={#1},to path={(\tikztostart)
+    .. controls ($(\tikztostart)!\pv{pos}!(\tikztotarget)!\pv{height}!270:(\tikztotarget)$)
+    and ($(\tikztostart)!1-\pv{pos}!(\tikztotarget)!\pv{height}!270:(\tikztotarget)$)
+    .. (\tikztotarget)\tikztonodes}},
+    settings/.code={\tikzset{quiver/.cd,#1}
+        \def\pv##1{\pgfkeysvalueof{/tikz/quiver/##1}}},
+    quiver/.cd,pos/.initial=0.35,height/.initial=0}
+
+% A TikZ style for shortening paths without the poor behaviour of `shorten <' and `shorten >'.
+\tikzset{between/.style n args={2}{/tikz/spath/at end path construction={
+    \tikzset{spath/split at keep middle={current}{#1}{#2}}
+}}}
+
+% TikZ arrowhead/tail styles.
+\tikzset{tail reversed/.code={\pgfsetarrowsstart{tikzcd to}}}
+\tikzset{2tail/.code={\pgfsetarrowsstart{Implies[reversed]}}}
+\tikzset{2tail reversed/.code={\pgfsetarrowsstart{Implies}}}
+% TikZ arrow styles.
+\tikzset{no body/.style={/tikz/dash pattern=on 0 off 1mm}}
+
 \DeclareOption{twocolumn}{\OptionNotUsed}
+
+% The colorful option gives access to the cproblem command 
+% Which defines the problem environment in a tcolorbox for some color
+\DeclareOption{colorful}{
+		\newcounter{problemctr}
+		\numberwithin{equation}{problemctr}
+		\renewcommand{\theequation}{\theproblemctr.\arabic{equation}}
+
+		\NewDocumentEnvironment{cproblem}{O{}}{%
+				\stepcounter{problemctr}
+				\begin{tcolorbox}[
+						blanker, 
+						interior engine = spartan, 
+						colback = cyan!10,
+						left = 3mm, top = 2mm, right = 3mm, bottom = 2mm, 
+						borderline west = {0.8mm}{0pt}{black},
+						after skip = 5mm,
+						breakable
+				]
+				\noindent\textbf{\textsf{Problem \theproblemctr}:} \par\vspace{0.1em}
+		}{%
+				\end{tcolorbox}
+		}
+
+}
 
 
 % The noboxsols environment will create the solutions environment without boxes
@@ -97,9 +187,6 @@
 % So they can control whether these get loaded
 \DeclareOption{mathshortcuts}{
 
-		% ========================== COMMON MATHEMATICAL SHORTCUTS ========================== 
-		% This part of the class defines several mathematical shortcuts 
-		% =================================================================================== 
 		% Blackboard fonts
 		\newcommand{\N}{\mathbb{N}}                 % Natural numbers
 		\newcommand{\Z}{\mathbb{Z}}                 % Integers
@@ -109,58 +196,53 @@
 		\newcommand{\F}{\mathbb{F}}                 % Finite fields 
 		\newcommand{\bP}{\mathbb{P}}								% Probability 
 		\newcommand{\E}{\mathbb{E}}									% Expectation
+		\newcommand{\idFn}{\mathbbm{1}}							% Indicator function
 
-		% Script fonts
-		\newcommand{\calT}{\mathcal{T}}
+		% Script (mathcal) fonts
+		\newcommand{\calT}{\mathcal{T}}							 
 		\newcommand{\calP}{\mathcal{P}}
+		\newcommand{\calS}{\mathcal{S}}
+		\newcommand{\calA}{\mathcal{A}}
+		\newcommand{\calB}{\mathcal{B}}
 
-
-		% ======================= FOR LINEAR ALGEBRA =======================
+		% Linear algebra
 		\DeclareMathOperator{\Span}{span}
-		\DeclareMathOperator{\Dim}{dim}
 		\DeclareMathOperator{\Null}{Null}
 		\DeclareMathOperator{\Range}{Range}
 		\DeclareMathOperator{\rank}{rank}
 		\DeclareMathOperator{\nullity}{nullity}
 		\DeclareMathOperator{\trace}{tr}
-		\DeclareMathOperator{\im}{Im}
+		\DeclareMathOperator{\im}{im}
 		\newcommand{\prtl}{\partial}
-		\newcommand{\betap}{{\beta'}}
-		\newcommand{\identitymapV}{\mathbf{1}_V}
-		\newcommand{\starsup}{\ensuremath{^{\star}}}
-		\newcommand{\starstar}{\ensuremath{^{\star\star}}}
-		\newcommand{\TT}{^\top}
 		\newcommand{\vecte}{\mathbf{e}}
 		\newcommand{\vectx}{\mathbf{x}}
 		\newcommand{\vecty}{\mathbf{y}}
 		\newcommand{\vectu}{\mathbf{u}}
 		\newcommand{\vecth}{\mathbf{h}}
-		% ======================= ======================= ===================
 
-		% ======================= FOR TOPOLOGY =======================
+		% Matrix groups
+		\newcommand{\GL}{\text{GL}} 
+		\newcommand{\SL}{\text{SL}}
+		\newcommand{\PGL}{\text{PGL}}
+		\newcommand{\PSL}{\text{PSL}}
+		\newcommand{\On}{\text{O}}
+		\newcommand{\SO}{\text{SO}}
+		\newcommand{\U}{\text{U}}
+		\newcommand{\SU}{\text{SU}}
+		
+		% Topology
 		\DeclareMathOperator{\Bd}{Bd}
 		\newcommand{\obar}{\overline}
 		\DeclareMathOperator{\Hom}{Hom}
 		\DeclareMathOperator{\Ext}{Ext}
-		% ============================================================
-
-		% ======================= FOR PROBABILITY/STATISTICS =======================
-		\newcommand{\Prob}[1]{\mathbb{P} \left( #1 \right)}
-		\newcommand{\E}[1]{\mathbb{E} \left[ #1 \right]}
-		\newcommand{\V}[1]{\mathbb{V} \left[ #1 \right]}
-		% ==========================================================================
+		
+		% Algebra 
+		\DeclareMathOperator{\Aut}{Aut}
+		\DeclareMathOperator{\orb}{orb}
+		\DeclareMathOperator{\stab}{stab}
+		\DeclareMathOperator{\core}{core}
+		\DeclareMathOperator{\Syl}{Syl}
 }
 
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
 \ProcessOptions\relax
-\LoadClass{article}
-\RequirePackage{geometry}
-
-% Update the \maketitle command to use the data we provide 
-\renewcommand{\maketitle}{
-		\assignHeader
-		\infoBox
-}
-
-% Change equation numbering to number equations by problem
-\numberwithin{equation}{problem}
