@@ -153,18 +153,19 @@
 		\numberwithin{equation}{problemctr}
 		\renewcommand{\theequation}{\theproblemctr.\arabic{equation}}
 
-		\NewDocumentEnvironment{cproblem}{O{cyan!10}}{%
+		\NewDocumentEnvironment{cproblem}{o}{%
 				\stepcounter{problemctr}
 				\begin{tcolorbox}[
-						blanker, 
-						interior engine = spartan, 
-						colback = #1,
+						enhanced jigsaw, 
 						left = 3mm, top = 2mm, right = 3mm, bottom = 2mm, 
+						boxrule = 0pt,
+						frame hidden,
 						borderline west = {0.8mm}{0pt}{black},
+						colback = cyan!10,
 						after skip = 5mm,
 						breakable
 				]
-				\noindent\textbf{\textsf{Problem \theproblemctr}:} \par\vspace{0.1em}
+				\noindent\textbf{\textsf{Problem \theproblemctr}} \IfNoValueTF{#1}{\textbf{:}}{(#1)\textbf{:}} \par\vspace{0.1em}
 		}{%
 				\end{tcolorbox}
 		}
@@ -205,6 +206,7 @@
 		\newcommand{\calS}{\mathcal{S}}
 		\newcommand{\calA}{\mathcal{A}}
 		\newcommand{\calB}{\mathcal{B}}
+		\newcommand{\calL}{\mathcal{L}}
 
 		% Linear algebra
 		\DeclareMathOperator{\Span}{span}
@@ -243,6 +245,50 @@
 		\DeclareMathOperator{\stab}{stab}
 		\DeclareMathOperator{\core}{core}
 		\DeclareMathOperator{\Syl}{Syl}
+
+		% Plus, minus, equals with extra alignments 
+		% These are to be used inside the specialized alignment environments for system of equations and IVP/BVPs
+		\newcommand{\aplus}{&{}+{}&}
+		\newcommand{\aminus}{&{}-{}&}
+		\newcommand{\aequals}{&{}={}&}
+		\newcommand{\ablank}{&&}
+
+		\NewDocumentEnvironment{systemeqns*}{m}{%
+				\begin{equation*}
+						\begin{alignedat}{#1}
+		}{
+						\end{alignedat}
+				\end{equation*}
+		}
+
+		\NewDocumentEnvironment{systemeqns}{m}{%
+				\begin{equation}
+						\begin{alignedat}{#1}
+		}{
+						\end{alignedat}
+				\end{equation}
+		}
+
+		% Line for one line of a bvp
+		\newcommand{\bvpline}[3]{%
+				#1 \aequals &#2& &\quad #3 \\
+		}
+
+		\NewDocumentEnvironment{bvp*}{}{%
+				\begin{equation*}
+						\left\{\begin{alignedat}{3}
+		}{
+						\end{alignedat}\right.
+				\end{equation*}
+		}
+
+		\NewDocumentEnvironment{bvp}{}{%
+				\begin{equation}
+						\left\{\begin{alignedat}{3}
+		}{
+						\end{alignedat}\right.
+				\end{equation}
+		}
 }
 
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
