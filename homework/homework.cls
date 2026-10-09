@@ -15,7 +15,7 @@
 \RequirePackage{esint}
 \RequirePackage{breqn}
 \RequirePackage{bbm}
-\RequirePackage{geometry}
+\RequirePackage[margin=1.0in]{geometry}
 \RequirePackage[hidelinks]{hyperref} 
 \RequirePackage[capitalize, noabbrev]{cleveref}
 \RequirePackage{import}
@@ -31,7 +31,7 @@
 \usetikzlibrary{decorations.pathmorphing}
 \usetikzlibrary{spath3}
 
-\tcbuselibrary{skins, breakable}
+\tcbuselibrary{skins, breakable, theorems}
 
 \newcommand{\class}[1]{\renewcommand\@class{#1}}
 \newcommand{\@class}{}
@@ -90,7 +90,7 @@
 \newenvironment{soln}[1][Solution]{
     \begin{tcolorbox}[breakable, blanker, before skip = 2pt,
         borderline = {0.5pt}{0pt}{black}, boxsep = 0.5em,
-				before upper = {\parindent 15pt}
+				before upper = {\parindent 15pt},
     ]
 
     \noindent \textbf{\textsf{#1:}}
@@ -116,7 +116,7 @@
     \import{./figures/}{#2.pdf_tex}
 }
 
-\pdfsuppresswarningpagegroup=1
+% \pdfsuppresswarningpagegroup=1
 
 % SOME CODE FROM THE QUIVER PACKAGE 
 % I use the quiver web app to draw commutative diagrams 
@@ -172,6 +172,14 @@
 
 }
 
+% The boxproblem environment puts a box around the problem environment 
+\DeclareOption{boxproblem}{
+		\tcolorboxenvironment{problem}{
+				breakable, blanker, before skip = 2pt,
+        borderline = {0.5pt}{0pt}{black}, boxsep = 0.5em,
+				before upper = {\parindent 15pt}
+		}
+}
 
 % The noboxsols environment will create the solutions environment without boxes
 \DeclareOption{noboxsols}{
@@ -181,6 +189,7 @@
 				\noindent
 		}{
 				\hfill $\solnend$
+				\bigbreak \noindent
 		}
 }
 
@@ -222,6 +231,8 @@
 		\newcommand{\vecty}{\mathbf{y}}
 		\newcommand{\vectu}{\mathbf{u}}
 		\newcommand{\vecth}{\mathbf{h}}
+		\newcommand{\vectv}{\mathbf{v}}
+		\newcommand{\vectr}{\mathbf{r}}
 
 		% Matrix groups
 		\newcommand{\GL}{\text{GL}} 
@@ -235,7 +246,6 @@
 		
 		% Topology
 		\DeclareMathOperator{\Bd}{Bd}
-		\newcommand{\obar}{\overline}
 		\DeclareMathOperator{\Hom}{Hom}
 		\DeclareMathOperator{\Ext}{Ext}
 		
@@ -245,6 +255,17 @@
 		\DeclareMathOperator{\stab}{stab}
 		\DeclareMathOperator{\core}{core}
 		\DeclareMathOperator{\Syl}{Syl}
+        \DeclareMathOperator{\Gal}{Gal}
+        \DeclareMathOperator{\Frac}{Frac}
+
+		% Complex analysis
+		\DeclareMathOperator{\Log}{Log}
+		\DeclareMathOperator{\Arg}{Arg}
+		\DeclareMathOperator{\ReC}{Re}
+		\DeclareMathOperator{\ImC}{Im}
+
+		% Absolute value 
+		\newcommand{\abs}[1]{\left| #1 \right|}
 
 		% Plus, minus, equals with extra alignments 
 		% These are to be used inside the specialized alignment environments for system of equations and IVP/BVPs
